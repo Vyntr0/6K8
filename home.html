@@ -1,0 +1,260 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ChatLoop - Home</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+    display:flex;
+    height:100vh;
+    background:#eef2ff;
+}
+
+/* Sidebar */
+
+.sidebar{
+    width:280px;
+    background:#5865F2;
+    color:white;
+    display:flex;
+    flex-direction:column;
+}
+
+.banner{
+    height:120px;
+    background:linear-gradient(90deg,#ff7eb3,#7afcff,#7c5cff);
+}
+
+.avatar{
+    width:90px;
+    height:90px;
+    border-radius:50%;
+    background:white;
+    margin:-45px auto 10px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:42px;
+    border:4px solid #5865F2;
+}
+
+.profile{
+    text-align:center;
+    padding-bottom:20px;
+}
+
+.profile h2{
+    margin-top:5px;
+}
+
+.menu{
+    padding:15px;
+}
+
+.menu button{
+    width:100%;
+    padding:12px;
+    margin-bottom:10px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    background:rgba(255,255,255,.15);
+    color:white;
+    font-size:15px;
+}
+
+.menu button:hover{
+    background:rgba(255,255,255,.25);
+}
+
+/* Main */
+
+.main{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+}
+
+.topbar{
+    background:white;
+    padding:15px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+
+.search{
+    width:300px;
+    padding:10px;
+    border-radius:10px;
+    border:1px solid #ccc;
+}
+
+.chat{
+    flex:1;
+    overflow:auto;
+    padding:20px;
+}
+
+.message{
+    background:white;
+    border-radius:12px;
+    padding:12px;
+    margin-bottom:10px;
+    box-shadow:0 2px 6px rgba(0,0,0,.08);
+}
+
+.bottom{
+    background:white;
+    padding:15px;
+    display:flex;
+    gap:10px;
+}
+
+.bottom input{
+    flex:1;
+    padding:12px;
+    border-radius:10px;
+    border:1px solid #ccc;
+}
+
+.bottom button{
+    padding:12px 20px;
+    border:none;
+    border-radius:10px;
+    background:#5865F2;
+    color:white;
+    cursor:pointer;
+}
+
+/* Friends */
+
+.friends{
+    width:220px;
+    background:white;
+    border-left:1px solid #ddd;
+    padding:15px;
+    overflow:auto;
+}
+
+.friend{
+    background:#f4f4f4;
+    padding:10px;
+    border-radius:10px;
+    margin-bottom:10px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+
+    <div class="banner"></div>
+
+    <div class="profile">
+        <div class="avatar">😀</div>
+        <h2>Ishan</h2>
+        <p>@ishan</p>
+    </div>
+
+    <div class="menu">
+        <button>🏠 Home</button>
+        <button>💬 Direct Messages</button>
+        <button>👥 Friends</button>
+        <button>👤 Profile</button>
+        <button>⚙️ Settings</button>
+    </div>
+
+</div>
+
+<div class="main">
+
+    <div class="topbar">
+        <h2>Global Chat</h2>
+
+        <input
+        class="search"
+        placeholder="Search users..."
+        >
+    </div>
+
+    <div class="chat" id="chat">
+
+        <div class="message">
+            <strong>System</strong><br>
+            Welcome to ChatLoop!
+        </div>
+
+    </div>
+
+    <div class="bottom">
+
+        <input
+        id="messageInput"
+        placeholder="Type a message..."
+        >
+
+        <button onclick="sendMessage()">
+            Send
+        </button>
+
+    </div>
+
+</div>
+
+<div class="friends">
+
+    <h3>Friends</h3>
+
+    <div class="friend">😀 Alex</div>
+    <div class="friend">😎 Chloe</div>
+    <div class="friend">🐶 Javi</div>
+    <div class="friend">🎮 William</div>
+
+</div>
+
+<script>
+
+function sendMessage(){
+
+    const input =
+    document.getElementById("messageInput");
+
+    if(input.value.trim()===""){
+        return;
+    }
+
+    const chat =
+    document.getElementById("chat");
+
+    chat.innerHTML +=
+    `
+    <div class="message">
+        <strong>You</strong><br>
+        ${input.value}
+    </div>
+    `;
+
+    input.value="";
+
+    chat.scrollTop = chat.scrollHeight;
+
+}
+
+</script>
+
+</body>
+</html>
+```
