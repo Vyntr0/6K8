@@ -1,0 +1,301 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ChatLoop</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial,Helvetica,sans-serif;
+}
+
+body{
+    background:linear-gradient(135deg,#6C63FF,#4FC3F7,#7CFFB2);
+    background-size:400% 400%;
+    animation:bgMove 12s infinite alternate;
+    height:100vh;
+    overflow:hidden;
+}
+
+@keyframes bgMove{
+    from{background-position:left;}
+    to{background-position:right;}
+}
+
+#loginScreen{
+    width:100%;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.loginBox{
+    width:420px;
+    background:white;
+    border-radius:20px;
+    padding:30px;
+    box-shadow:0 15px 40px rgba(0,0,0,.2);
+}
+
+.loginBox h1{
+    text-align:center;
+    color:#5865F2;
+    margin-bottom:20px;
+}
+
+.loginBox input{
+    width:100%;
+    padding:12px;
+    margin-top:10px;
+    border-radius:10px;
+    border:2px solid #ddd;
+    font-size:16px;
+}
+
+.loginBox button{
+    width:100%;
+    padding:12px;
+    margin-top:15px;
+    border:none;
+    border-radius:10px;
+    background:#5865F2;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+
+#app{
+    display:none;
+    height:100vh;
+}
+
+.sidebar{
+    width:280px;
+    height:100vh;
+    background:#1f2330;
+    color:white;
+    float:left;
+    overflow:auto;
+}
+
+.profile{
+    padding:20px;
+    text-align:center;
+}
+
+.banner{
+    height:120px;
+    border-radius:12px;
+    background:linear-gradient(90deg,#ff6ec7,#6c63ff);
+}
+
+.avatar{
+    width:90px;
+    height:90px;
+    border-radius:50%;
+    background:white;
+    margin:-45px auto 10px;
+    border:5px solid #1f2330;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:40px;
+}
+
+.menu button{
+    width:90%;
+    margin:8px 5%;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    background:#2d3347;
+    color:white;
+}
+
+.main{
+    margin-left:280px;
+    height:100vh;
+    display:flex;
+    flex-direction:column;
+}
+
+.header{
+    background:white;
+    padding:15px;
+    font-size:24px;
+    font-weight:bold;
+}
+
+.messages{
+    flex:1;
+    padding:20px;
+    overflow:auto;
+    background:#eef3ff;
+}
+
+.message{
+    background:white;
+    padding:12px;
+    margin-bottom:10px;
+    border-radius:12px;
+}
+
+.bottom{
+    display:flex;
+    padding:15px;
+    background:white;
+}
+
+.bottom input{
+    flex:1;
+    padding:12px;
+    border-radius:10px;
+    border:1px solid #ccc;
+}
+
+.bottom button{
+    margin-left:10px;
+    padding:12px 20px;
+    border:none;
+    border-radius:10px;
+    background:#5865F2;
+    color:white;
+    cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div id="loginScreen">
+
+<div class="loginBox">
+
+<h1>ChatLoop</h1>
+
+<input id="username" placeholder="Choose a username">
+
+<input id="avatarEmoji" placeholder="Avatar Emoji (😀)">
+
+<button onclick="login()">
+Create Account / Login
+</button>
+
+</div>
+
+</div>
+
+<div id="app">
+
+<div class="sidebar">
+
+<div class="profile">
+
+<div class="banner"></div>
+
+<div class="avatar" id="avatar">
+😀
+</div>
+
+<h2 id="displayName">
+User
+</h2>
+
+</div>
+
+<div class="menu">
+
+<button>🏠 Home</button>
+
+<button>👥 Friends</button>
+
+<button>💬 DMs</button>
+
+<button>👤 Profile</button>
+
+<button>⚙️ Settings</button>
+
+</div>
+
+</div>
+
+<div class="main">
+
+<div class="header">
+Global Chat
+</div>
+
+<div class="messages" id="messages">
+
+<div class="message">
+<b>System</b><br>
+Welcome to ChatLoop!
+</div>
+
+</div>
+
+<div class="bottom">
+
+<input id="msg" placeholder="Type a message...">
+
+<button onclick="sendMessage()">
+Send
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+function login(){
+
+let user=document.getElementById("username").value;
+
+let emoji=document.getElementById("avatarEmoji").value;
+
+if(user=="") return;
+
+document.getElementById("loginScreen").style.display="none";
+
+document.getElementById("app").style.display="block";
+
+document.getElementById("displayName").innerText=user;
+
+if(emoji!=""){
+document.getElementById("avatar").innerText=emoji;
+}
+
+}
+
+function sendMessage(){
+
+let input=document.getElementById("msg");
+
+if(input.value=="") return;
+
+document.getElementById("messages").innerHTML+=
+"<div class='message'><b>You</b><br>"+input.value+"</div>";
+
+input.value="";
+
+let box=document.getElementById("messages");
+
+box.scrollTop=box.scrollHeight;
+
+}
+
+</script>
+
+</body>
+</html>
+```
