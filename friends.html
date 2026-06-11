@@ -1,0 +1,191 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ChatLoop - Friends</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#eef2ff;
+    display:flex;
+    justify-content:center;
+    padding:30px;
+}
+
+.container{
+    width:700px;
+    background:white;
+    border-radius:20px;
+    padding:25px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.15);
+}
+
+h1{
+    margin-bottom:20px;
+}
+
+.section{
+    margin-bottom:25px;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    border-radius:10px;
+    border:1px solid #ccc;
+    margin-top:8px;
+}
+
+button{
+    margin-top:10px;
+    padding:12px;
+    width:100%;
+    border:none;
+    border-radius:10px;
+    background:#5865F2;
+    color:white;
+    cursor:pointer;
+    font-size:16px;
+}
+
+.list{
+    margin-top:10px;
+}
+
+.friend{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:#f4f4f4;
+    padding:10px;
+    border-radius:10px;
+    margin-bottom:10px;
+}
+
+.friend button{
+    width:auto;
+    padding:6px 10px;
+    font-size:14px;
+    margin:0;
+    background:#ff4d4d;
+}
+
+.requests .friend button{
+    background:#4caf50;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>👥 Friends</h1>
+
+<!-- Add Friend -->
+<div class="section">
+    <h3>Add Friend</h3>
+    <input id="friendName" placeholder="Enter username">
+    <button onclick="addFriend()">Send Friend Request</button>
+</div>
+
+<!-- Friend Requests -->
+<div class="section requests">
+    <h3>Friend Requests</h3>
+    <div id="requests"></div>
+</div>
+
+<!-- Friends List -->
+<div class="section">
+    <h3>Your Friends</h3>
+    <div id="friendsList"></div>
+</div>
+
+</div>
+
+<script>
+
+let friends = JSON.parse(localStorage.getItem("friends") || "[]");
+let requests = JSON.parse(localStorage.getItem("requests") || "[]");
+
+function render(){
+    renderFriends();
+    renderRequests();
+}
+
+function addFriend(){
+    let name = document.getElementById("friendName").value.trim();
+    if(!name) return;
+
+    requests.push(name);
+    localStorage.setItem("requests", JSON.stringify(requests));
+
+    document.getElementById("friendName").value = "";
+    renderRequests();
+
+    alert("Friend request sent!");
+}
+
+function acceptFriend(name){
+    friends.push(name);
+
+    requests = requests.filter(r => r !== name);
+
+    localStorage.setItem("friends", JSON.stringify(friends));
+    localStorage.setItem("requests", JSON.stringify(requests));
+
+    render();
+}
+
+function removeFriend(name){
+    friends = friends.filter(f => f !== name);
+    localStorage.setItem("friends", JSON.stringify(friends));
+    renderFriends();
+}
+
+function renderFriends(){
+    let html = "";
+
+    friends.forEach(f => {
+        html += `
+        <div class="friend">
+            <span>${f}</span>
+            <button onclick="removeFriend('${f}')">Remove</button>
+        </div>
+        `;
+    });
+
+    document.getElementById("friendsList").innerHTML = html || "<p>No friends yet</p>";
+}
+
+function renderRequests(){
+    let html = "";
+
+    requests.forEach(r => {
+        html += `
+        <div class="friend">
+            <span>${r}</span>
+            <button onclick="acceptFriend('${r}')">Accept</button>
+        </div>
+        `;
+    });
+
+    document.getElementById("requests").innerHTML = html || "<p>No requests</p>";
+}
+
+render();
+
+</script>
+
+</body>
+</html>
+```
