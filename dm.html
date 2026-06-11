@@ -1,0 +1,201 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ChatLoop - DMs</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    display:flex;
+    height:100vh;
+    background:#eef2ff;
+}
+
+/* Sidebar (friends list) */
+.sidebar{
+    width:260px;
+    background:#5865F2;
+    color:white;
+    padding:15px;
+    overflow:auto;
+}
+
+.friend{
+    background:rgba(255,255,255,0.15);
+    padding:10px;
+    margin-bottom:10px;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+.friend:hover{
+    background:rgba(255,255,255,0.25);
+}
+
+/* Chat area */
+.chat{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+}
+
+.header{
+    background:white;
+    padding:15px;
+    font-size:20px;
+    font-weight:bold;
+    box-shadow:0 2px 6px rgba(0,0,0,0.1);
+}
+
+.messages{
+    flex:1;
+    padding:20px;
+    overflow:auto;
+}
+
+.msg{
+    background:white;
+    padding:10px;
+    margin-bottom:10px;
+    border-radius:10px;
+    width:fit-content;
+    max-width:60%;
+}
+
+.msg.me{
+    margin-left:auto;
+    background:#5865F2;
+    color:white;
+}
+
+.bottom{
+    display:flex;
+    padding:15px;
+    background:white;
+}
+
+.bottom input{
+    flex:1;
+    padding:12px;
+    border-radius:10px;
+    border:1px solid #ccc;
+}
+
+.bottom button{
+    margin-left:10px;
+    padding:12px 20px;
+    border:none;
+    border-radius:10px;
+    background:#5865F2;
+    color:white;
+    cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+    <h3>Friends</h3>
+    <div id="friendsList"></div>
+</div>
+
+<div class="chat">
+
+    <div class="header" id="chatWith">
+        Select a friend
+    </div>
+
+    <div class="messages" id="messages"></div>
+
+    <div class="bottom">
+        <input id="msg" placeholder="Type a message...">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+
+</div>
+
+<script>
+
+let friends = JSON.parse(localStorage.getItem("friends") || "[]");
+let currentChat = null;
+
+function loadFriends(){
+    let html = "";
+
+    friends.forEach(f => {
+        html += `
+        <div class="friend" onclick="openChat('${f}')">
+            ${f}
+        </div>`;
+    });
+
+    document.getElementById("friendsList").innerHTML =
+        html || "<p>No friends yet</p>";
+}
+
+function openChat(name){
+    currentChat = name;
+    document.getElementById("chatWith").innerText = "Chat with " + name;
+    loadMessages();
+}
+
+function getKey(){
+    return "dm_" + currentChat;
+}
+
+function loadMessages(){
+    if(!currentChat) return;
+
+    let msgs = JSON.parse(localStorage.getItem(getKey()) || "[]");
+
+    let html = "";
+
+    msgs.forEach(m => {
+        html += `
+        <div class="msg ${m.me ? 'me' : ''}">
+            ${m.text}
+        </div>`;
+    });
+
+    document.getElementById("messages").innerHTML = html;
+}
+
+function sendMessage(){
+
+    if(!currentChat) return;
+
+    let input = document.getElementById("msg");
+
+    if(input.value.trim() === "") return;
+
+    let msgs = JSON.parse(localStorage.getItem(getKey()) || "[]");
+
+    msgs.push({
+        text: input.value,
+        me: true
+    });
+
+    localStorage.setItem(getKey(), JSON.stringify(msgs));
+
+    input.value = "";
+
+    loadMessages();
+}
+
+loadFriends();
+
+</script>
+
+</body>
+</html>
+```
