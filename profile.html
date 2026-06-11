@@ -1,0 +1,179 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ChatLoop - Profile</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#eef2ff;
+    display:flex;
+    justify-content:center;
+    padding:30px;
+}
+
+.profile-card{
+    width:600px;
+    background:white;
+    border-radius:20px;
+    overflow:hidden;
+    box-shadow:0 10px 30px rgba(0,0,0,0.15);
+}
+
+/* Banner */
+.banner{
+    height:160px;
+    background:linear-gradient(90deg,#ff6ec7,#6c63ff,#4fc3f7);
+    position:relative;
+}
+
+/* Avatar */
+.avatar{
+    width:110px;
+    height:110px;
+    border-radius:50%;
+    background:white;
+    border:5px solid white;
+    position:absolute;
+    bottom:-55px;
+    left:30px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:50px;
+}
+
+/* Content */
+.content{
+    padding:70px 30px 30px;
+}
+
+h2{
+    margin-bottom:5px;
+}
+
+.username{
+    color:gray;
+    margin-bottom:20px;
+}
+
+/* Inputs */
+input{
+    width:100%;
+    padding:12px;
+    margin:8px 0;
+    border-radius:10px;
+    border:1px solid #ccc;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    margin-top:10px;
+    border:none;
+    border-radius:10px;
+    background:#5865F2;
+    color:white;
+    cursor:pointer;
+    font-size:16px;
+}
+
+button:hover{
+    opacity:0.9;
+}
+
+/* Small section */
+.section{
+    margin-top:15px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="profile-card">
+
+    <div class="banner">
+        <div class="avatar" id="avatar">😀</div>
+    </div>
+
+    <div class="content">
+
+        <h2 id="displayName">Your Name</h2>
+        <div class="username" id="displayUser">@username</div>
+
+        <div class="section">
+            <label>Display Name</label>
+            <input id="nameInput" placeholder="Change display name">
+        </div>
+
+        <div class="section">
+            <label>Username</label>
+            <input id="userInput" placeholder="Change username">
+        </div>
+
+        <div class="section">
+            <label>Avatar Emoji</label>
+            <input id="avatarInput" placeholder="😀 😎 🎮 🐶">
+        </div>
+
+        <button onclick="saveProfile()">Save Changes</button>
+
+    </div>
+
+</div>
+
+<script>
+
+// Load saved data
+window.onload = function(){
+    document.getElementById("displayName").innerText =
+        localStorage.getItem("name") || "Your Name";
+
+    document.getElementById("displayUser").innerText =
+        "@" + (localStorage.getItem("user") || "username");
+
+    document.getElementById("avatar").innerText =
+        localStorage.getItem("avatar") || "😀";
+};
+
+// Save profile
+function saveProfile(){
+
+    const name = document.getElementById("nameInput").value;
+    const user = document.getElementById("userInput").value;
+    const avatar = document.getElementById("avatarInput").value;
+
+    if(name){
+        localStorage.setItem("name", name);
+        document.getElementById("displayName").innerText = name;
+    }
+
+    if(user){
+        localStorage.setItem("user", user);
+        document.getElementById("displayUser").innerText = "@"+user;
+    }
+
+    if(avatar){
+        localStorage.setItem("avatar", avatar);
+        document.getElementById("avatar").innerText = avatar;
+    }
+
+    alert("Profile updated!");
+
+}
+
+</script>
+
+</body>
+</html>
+```
