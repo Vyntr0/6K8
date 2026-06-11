@@ -1,0 +1,150 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Class Chat</title>
+
+<style>
+body{
+    margin:0;
+    font-family:Arial,sans-serif;
+    background:#1e1f22;
+    color:white;
+    display:flex;
+    height:100vh;
+}
+
+.sidebar{
+    width:250px;
+    background:#2b2d31;
+    padding:15px;
+}
+
+.sidebar h2{
+    margin-top:0;
+}
+
+.user{
+    padding:10px;
+    margin:8px 0;
+    background:#3a3d44;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+.chat{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+}
+
+.header{
+    background:#313338;
+    padding:15px;
+    font-size:22px;
+}
+
+.messages{
+    flex:1;
+    overflow-y:auto;
+    padding:20px;
+}
+
+.message{
+    background:#404249;
+    padding:10px;
+    border-radius:8px;
+    margin-bottom:10px;
+}
+
+.bottom{
+    display:flex;
+    padding:15px;
+    background:#313338;
+}
+
+.bottom input{
+    flex:1;
+    padding:10px;
+    border:none;
+    border-radius:8px;
+    font-size:16px;
+}
+
+.bottom button{
+    margin-left:10px;
+    padding:10px 20px;
+    border:none;
+    border-radius:8px;
+    background:#5865F2;
+    color:white;
+    cursor:pointer;
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="sidebar">
+    <h2>Class Chat</h2>
+
+    <div class="user">💬 Global Chat</div>
+    <div class="user">👤 Alex</div>
+    <div class="user">👤 Chloe</div>
+    <div class="user">👤 Javi</div>
+    <div class="user">👤 William</div>
+</div>
+
+<div class="chat">
+
+    <div class="header">
+        Global Chat
+    </div>
+
+    <div class="messages" id="messages">
+
+        <div class="message">
+            <strong>Alex:</strong> Hi everyone!
+        </div>
+
+        <div class="message">
+            <strong>Chloe:</strong> Hello 👋
+        </div>
+
+    </div>
+
+    <div class="bottom">
+        <input id="msg" placeholder="Type a message...">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+
+</div>
+
+<script>
+function sendMessage(){
+
+    const input=document.getElementById("msg");
+
+    if(input.value.trim()===""){
+        return;
+    }
+
+    const messages=document.getElementById("messages");
+
+    messages.innerHTML +=
+    `<div class="message">
+        <strong>You:</strong> ${input.value}
+    </div>`;
+
+    input.value="";
+
+    messages.scrollTop=messages.scrollHeight;
+}
+</script>
+
+</body>
+</html>
+```
