@@ -1,0 +1,256 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ChatLoop - Groups</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    display:flex;
+    height:100vh;
+    background:#eef2ff;
+}
+
+/* Sidebar */
+.sidebar{
+    width:260px;
+    background:#5865F2;
+    color:white;
+    padding:15px;
+    overflow:auto;
+}
+
+.group{
+    background:rgba(255,255,255,0.15);
+    padding:10px;
+    margin-bottom:10px;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+.group:hover{
+    background:rgba(255,255,255,0.25);
+}
+
+/* Main chat */
+.chat{
+    flex:1;
+    display:flex;
+    flex-direction:column;
+}
+
+.header{
+    background:white;
+    padding:15px;
+    font-size:20px;
+    font-weight:bold;
+    box-shadow:0 2px 6px rgba(0,0,0,0.1);
+}
+
+.messages{
+    flex:1;
+    padding:20px;
+    overflow:auto;
+}
+
+.msg{
+    background:white;
+    padding:10px;
+    margin-bottom:10px;
+    border-radius:10px;
+    width:fit-content;
+    max-width:60%;
+}
+
+.msg.me{
+    margin-left:auto;
+    background:#5865F2;
+    color:white;
+}
+
+.bottom{
+    display:flex;
+    padding:15px;
+    background:white;
+}
+
+.bottom input{
+    flex:1;
+    padding:12px;
+    border-radius:10px;
+    border:1px solid #ccc;
+}
+
+.bottom button{
+    margin-left:10px;
+    padding:12px 20px;
+    border:none;
+    border-radius:10px;
+    background:#5865F2;
+    color:white;
+    cursor:pointer;
+}
+
+/* Create group */
+.create{
+    margin-bottom:15px;
+}
+
+.create input{
+    width:100%;
+    padding:10px;
+    border:none;
+    border-radius:8px;
+    margin-bottom:8px;
+}
+
+.create button{
+    width:100%;
+    padding:10px;
+    border:none;
+    border-radius:8px;
+    background:white;
+    color:#5865F2;
+    cursor:pointer;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="sidebar">
+
+    <h3>Groups</h3>
+
+    <div class="create">
+        <input id="groupName" placeholder="New group name">
+        <button onclick="createGroup()">+ Create Group</button>
+    </div>
+
+    <div id="groupList"></div>
+
+</div>
+
+<div class="chat">
+
+    <div class="header" id="groupTitle">
+        Select a group
+    </div>
+
+    <div class="messages" id="messages"></div>
+
+    <div class="bottom">
+        <input id="msg" placeholder="Type a message...">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+
+</div>
+
+<script>
+
+let groups = JSON.parse(localStorage.getItem("groups") || "[]");
+let currentGroup = null;
+
+function save(){
+    localStorage.setItem("groups", JSON.stringify(groups));
+}
+
+function renderGroups(){
+
+    let html = "";
+
+    groups.forEach(g => {
+        html += `
+        <div class="group" onclick="openGroup('${g.name}')">
+            ${g.name}
+        </div>`;
+    });
+
+    document.getElementById("groupList").innerHTML =
+        html || "<p>No groups yet</p>";
+}
+
+function createGroup(){
+
+    let name = document.getElementById("groupName").value.trim();
+    if(!name) return;
+
+    groups.push({name:name});
+
+    save();
+    renderGroups();
+
+    document.getElementById("groupName").value = "";
+}
+
+function openGroup(name){
+
+    currentGroup = name;
+
+    document.getElementById("groupTitle").innerText =
+        "Group: " + name;
+
+    loadMessages();
+}
+
+function key(){
+    return "group_" + currentGroup;
+}
+
+function loadMessages(){
+
+    if(!currentGroup) return;
+
+    let msgs = JSON.parse(localStorage.getItem(key()) || "[]");
+
+    let html = "";
+
+    msgs.forEach(m => {
+        html += `
+        <div class="msg ${m.me ? 'me' : ''}">
+            ${m.text}
+        </div>`;
+    });
+
+    document.getElementById("messages").innerHTML = html;
+}
+
+function sendMessage(){
+
+    if(!currentGroup) return;
+
+    let input = document.getElementById("msg");
+
+    if(input.value.trim() === "") return;
+
+    let msgs = JSON.parse(localStorage.getItem(key()) || "[]");
+
+    msgs.push({
+        text: input.value,
+        me: true
+    });
+
+    localStorage.setItem(key(), JSON.stringify(msgs));
+
+    input.value = "";
+
+    loadMessages();
+}
+
+renderGroups();
+
+</script>
+
+</body>
+</html>
+```
