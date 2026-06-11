@@ -1,0 +1,214 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ChatLoop - Settings</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#eef2ff;
+    display:flex;
+    justify-content:center;
+    padding:30px;
+    transition:0.3s;
+}
+
+/* Dark mode */
+body.dark{
+    background:#1e1f22;
+    color:white;
+}
+
+.card{
+    width:600px;
+    background:white;
+    border-radius:20px;
+    padding:25px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.15);
+}
+
+body.dark .card{
+    background:#2b2d31;
+}
+
+h1{
+    margin-bottom:20px;
+}
+
+.section{
+    margin-bottom:20px;
+    padding:15px;
+    border-radius:12px;
+    background:#f4f4f4;
+}
+
+body.dark .section{
+    background:#3a3d44;
+}
+
+label{
+    display:block;
+    margin-bottom:6px;
+    font-weight:bold;
+}
+
+input, select{
+    width:100%;
+    padding:10px;
+    border-radius:10px;
+    border:1px solid #ccc;
+    outline:none;
+}
+
+button{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    background:#5865F2;
+    color:white;
+    cursor:pointer;
+    font-size:16px;
+    margin-top:10px;
+}
+
+.toggle{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+/* switch */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 26px;
+}
+
+.switch input { display:none; }
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0; left: 0;
+  right: 0; bottom: 0;
+  background-color: #ccc;
+  transition: .4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: #5865F2;
+}
+
+input:checked + .slider:before {
+  transform: translateX(24px);
+}
+</style>
+</head>
+
+<body>
+
+<div class="card">
+
+<h1>⚙️ Settings</h1>
+
+<!-- Dark Mode -->
+<div class="section toggle">
+    <span>Dark Mode</span>
+    <label class="switch">
+        <input type="checkbox" id="darkToggle" onclick="toggleDark()">
+        <span class="slider"></span>
+    </label>
+</div>
+
+<!-- Theme -->
+<div class="section">
+    <label>Theme Color</label>
+    <select id="theme">
+        <option value="#5865F2">Blue</option>
+        <option value="#ff6ec7">Pink</option>
+        <option value="#7c5cff">Purple</option>
+        <option value="#4fc3f7">Cyan</option>
+    </select>
+</div>
+
+<!-- Username -->
+<div class="section">
+    <label>Change Username</label>
+    <input id="username" placeholder="New username">
+</div>
+
+<!-- Notifications -->
+<div class="section toggle">
+    <span>Notifications</span>
+    <label class="switch">
+        <input type="checkbox" id="notif" checked>
+        <span class="slider"></span>
+    </label>
+</div>
+
+<button onclick="saveSettings()">Save Settings</button>
+
+</div>
+
+<script>
+
+window.onload = function(){
+    if(localStorage.getItem("dark") === "true"){
+        document.body.classList.add("dark");
+        document.getElementById("darkToggle").checked = true;
+    }
+
+    document.getElementById("theme").value =
+        localStorage.getItem("theme") || "#5865F2";
+};
+
+function toggleDark(){
+    document.body.classList.toggle("dark");
+    localStorage.setItem("dark", document.body.classList.contains("dark"));
+}
+
+function saveSettings(){
+
+    const theme = document.getElementById("theme").value;
+    const username = document.getElementById("username").value;
+    const notif = document.getElementById("notif").checked;
+
+    localStorage.setItem("theme", theme);
+    localStorage.setItem("notif", notif);
+
+    if(username){
+        localStorage.setItem("user", username);
+    }
+
+    alert("Settings saved!");
+}
+
+</script>
+
+</body>
+</html>
+```
